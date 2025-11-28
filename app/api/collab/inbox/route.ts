@@ -18,9 +18,10 @@ export async function GET(req: NextRequest) {
 
     await connectDB();
 
-    const requests = await CollabRequest.find({ influencerId })
+    // Explicitly tell TS this is an array of any to avoid over-strict typing
+    const requests = (await CollabRequest.find({ influencerId })
       .sort({ createdAt: -1 })
-      .lean();
+      .lean()) as any[];
 
     const brandIds = requests.map((r) => r.brandId);
     const campaignIds = requests
@@ -36,12 +37,12 @@ export async function GET(req: NextRequest) {
 
     const merged = requests.map((r) => {
       const brand = brands.find(
-        (b) => b._id.toString() === r.brandId.toString()
+        (b: any) => b._id.toString() === r.brandId.toString()
       );
 
       const campaign = r.campaignId
         ? campaigns.find(
-            (c: any) => c._id.toString() === r.campaignId?.toString()
+            (c: any) => c._id.toString() === r.campaignId.toString()
           )
         : null;
 
