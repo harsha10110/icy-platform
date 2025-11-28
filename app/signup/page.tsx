@@ -10,7 +10,7 @@ export default function SignupPage() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Read ?role= from URL on client
+  // Read ?role= from URL on client (no useSearchParams)
   useEffect(() => {
     if (typeof window === "undefined") return;
     const params = new URLSearchParams(window.location.search);
