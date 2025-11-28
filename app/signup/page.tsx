@@ -1,26 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 
 export default function SignupPage() {
-  const searchParams = useSearchParams();
-  const defaultRole = searchParams.get("role") || "influencer";
-
+  const [role, setRole] = useState<"brand" | "influencer">("influencer");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<"brand" | "influencer">(
-    defaultRole === "brand" ? "brand" : "influencer"
-  );
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Read ?role= from URL on client
   useEffect(() => {
-    if (defaultRole === "brand" || defaultRole === "influencer") {
-      setRole(defaultRole as "brand" | "influencer");
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const r = params.get("role");
+    if (r === "brand" || r === "influencer") {
+      setRole(r);
     }
-  }, [defaultRole]);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
