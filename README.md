@@ -200,3 +200,4 @@ This is a focused MVP for **influencer–brand collaboration workflows**.
 
    ```bash
    npm install
+# icy-platform
